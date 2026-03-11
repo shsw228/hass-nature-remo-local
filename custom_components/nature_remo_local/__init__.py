@@ -22,15 +22,12 @@ class NatureRemoRuntime:
     coordinator: NatureRemoDataUpdateCoordinator
 
 
-type NatureRemoConfigEntry = ConfigEntry
-
-
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the integration from YAML."""
     return True
 
 
-async def async_setup_entry(hass: HomeAssistant, entry: NatureRemoConfigEntry) -> bool:
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Nature Remo from a config entry."""
     session = async_get_clientsession(hass)
     api = NatureRemoApi(session, entry.data[CONF_ACCESS_TOKEN])
@@ -44,7 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: NatureRemoConfigEntry) -
     return True
 
 
-async def async_unload_entry(hass: HomeAssistant, entry: NatureRemoConfigEntry) -> bool:
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload a config entry."""
     unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     if unload_ok:
@@ -52,6 +49,6 @@ async def async_unload_entry(hass: HomeAssistant, entry: NatureRemoConfigEntry) 
     return unload_ok
 
 
-async def async_reload_entry(hass: HomeAssistant, entry: NatureRemoConfigEntry) -> None:
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Reload the config entry when options change."""
     await hass.config_entries.async_reload(entry.entry_id)
