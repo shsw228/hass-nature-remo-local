@@ -11,6 +11,7 @@ PLATFORMS: tuple[Platform, ...] = (
     Platform.SENSOR,
     Platform.CLIMATE,
     Platform.LIGHT,
+    Platform.BUTTON,
 )
 
 DEFAULT_SCAN_INTERVAL = 180

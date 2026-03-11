@@ -11,6 +11,7 @@ This repository is rebuilding the integration from scratch for newer Home Assist
 - Temperature and humidity sensors from Remo devices
 - `climate` entities for air conditioners
 - `light` entities for supported lighting appliances
+- `button` entities for individual lighting appliance buttons
 - Rate limit aware polling and post-action refresh control
 
 ## Installation
@@ -46,6 +47,7 @@ The token needs at least:
 - `sensor`: temperature, humidity
 - `climate`: air conditioners
 - `light`: lights supported by Nature Remo Cloud API
+- `button`: individual buttons returned for supported light appliances
 
 ## Notes
 
@@ -53,6 +55,7 @@ The token needs at least:
 - Default polling is `180` seconds.
 - Nature rate limits requests per account. The integration reads `X-Rate-Limit-*` headers and reduces refresh pressure when the remaining budget is low.
 - Light on/off currently depends on matching known button names from the Nature Remo API response.
+- Light appliances also expose each available Nature Remo button as a Home Assistant `button` entity.
 
 ## Dashboard
 
