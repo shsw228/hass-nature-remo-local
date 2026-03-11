@@ -1,0 +1,259 @@
+"""Climate platform for Nature Remo Local."""
+
+from __future__ import annotations
+
+from typing import Any
+
+from homeassistant.components.climate import ClimateEntity
+from homeassistant.components.climate.const import (
+    ATTR_HVAC_MODE,
+    ClimateEntityFeature,
+    HVACMode,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import ATTR_TEMPERATURE, UnitOfTemperature
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
+
+from . import NatureRemoRuntime
+from .const import DOMAIN
+from .coordinator import NatureRemoDataUpdateCoordinator
+
+NATURE_TO_HVAC: dict[str, HVACMode] = {
+    "auto": HVACMode.AUTO,
+    "blow": HVACMode.FAN_ONLY,
+    "cool": HVACMode.COOL,
+    "dry": HVACMode.DRY,
+    "warm": HVACMode.HEAT,
+}
+
+HVAC_TO_NATURE = {value: key for key, value in NATURE_TO_HVAC.items()}
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: ConfigEntry,
+    async_add_entities: AddEntitiesCallback,
+) -> None:
+    """Set up Nature Remo climates from a config entry."""
+    runtime: NatureRemoRuntime = hass.data[DOMAIN][entry.entry_id]
+    entities = [
+        NatureRemoClimateEntity(runtime, appliance)
+        for appliance in runtime.coordinator.data.appliances
+        if appliance.get("aircon") is not None and appliance.get("settings") is not None
+    ]
+    async_add_entities(entities)
+
+
+class NatureRemoClimateEntity(
+    CoordinatorEntity[NatureRemoDataUpdateCoordinator], ClimateEntity
+):
+    """Representation of a Nature Remo air conditioner."""
+
+    _attr_has_entity_name = True
+    _attr_supported_features = (
+        ClimateEntityFeature.TARGET_TEMPERATURE
+        | ClimateEntityFeature.TURN_ON
+        | ClimateEntityFeature.TURN_OFF
+    )
+
+    def __init__(
+        self, runtime: NatureRemoRuntime, appliance: dict[str, Any]
+    ) -> None:
+        super().__init__(runtime.coordinator)
+        self._api = runtime.api
+        self._appliance_id = appliance["id"]
+        self._attr_unique_id = appliance["id"]
+        linked_device = appliance.get("device") or {}
+        via_device = linked_device.get("id")
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"appliance_{appliance['id']}")},
+            manufacturer="Nature",
+            model="Air Conditioner",
+            name=appliance["nickname"],
+            via_device=(DOMAIN, via_device) if via_device else None,
+        )
+
+    @property
+    def current_temperature(self) -> float | None:
+        """Return the current temperature."""
+        linked_device = self._appliance.get("device") or {}
+        device = self.coordinator.data.devices_by_id.get(linked_device.get("id", ""))
+        newest_events = (device or {}).get("newest_events") or {}
+        event = newest_events.get("te")
+        return None if event is None else event.get("val")
+
+    @property
+    def target_temperature(self) -> float | None:
+        """Return the target temperature."""
+        raw = (self._settings or {}).get("temp")
+        if raw in (None, ""):
+            return None
+        try:
+            return float(raw)
+        except (TypeError, ValueError):
+            return None
+
+    @property
+    def temperature_unit(self) -> str:
+        """Return the unit of measurement."""
+        unit = ((self._settings or {}).get("temp_unit") or "").lower()
+        return UnitOfTemperature.FAHRENHEIT if unit == "f" else UnitOfTemperature.CELSIUS
+
+    @property
+    def hvac_mode(self) -> HVACMode:
+        """Return the current HVAC mode."""
+        settings = self._settings or {}
+        if settings.get("button") == "power-off":
+            return HVACMode.OFF
+
+        mode = settings.get("mode")
+        return NATURE_TO_HVAC.get(mode, HVACMode.AUTO)
+
+    @property
+    def hvac_modes(self) -> list[HVACMode]:
+        """Return available HVAC modes."""
+        modes = [HVACMode.OFF]
+        for mode in (self._aircon_range.get("modes") or {}).keys():
+            hvac_mode = NATURE_TO_HVAC.get(mode)
+            if hvac_mode and hvac_mode not in modes:
+                modes.append(hvac_mode)
+        if len(modes) == 1:
+            modes.extend([HVACMode.AUTO, HVACMode.COOL, HVACMode.HEAT])
+        return modes
+
+    @property
+    def min_temp(self) -> float:
+        """Return the minimum target temperature."""
+        temperatures = self._available_temperatures()
+        return min(temperatures) if temperatures else super().min_temp
+
+    @property
+    def max_temp(self) -> float:
+        """Return the maximum target temperature."""
+        temperatures = self._available_temperatures()
+        return max(temperatures) if temperatures else super().max_temp
+
+    @property
+    def available(self) -> bool:
+        """Return if the entity is available."""
+        return self._appliance is not None
+
+    async def async_set_temperature(self, **kwargs: Any) -> None:
+        """Set a new target temperature."""
+        temperature = kwargs.get(ATTR_TEMPERATURE)
+        hvac_mode = kwargs.get(ATTR_HVAC_MODE)
+
+        if hvac_mode is not None:
+            await self.async_set_hvac_mode(hvac_mode)
+            if temperature is None:
+                return
+
+        if temperature is None:
+            return
+
+        mode = HVAC_TO_NATURE.get(self.hvac_mode, self._default_operation_mode())
+        payload = self._build_payload(
+            button="",
+            operation_mode=mode,
+            temperature=str(int(temperature) if float(temperature).is_integer() else temperature),
+        )
+        await self._api.async_set_aircon_settings(self._appliance_id, payload)
+        await self.coordinator.async_request_refresh()
+
+    async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
+        """Set the HVAC mode."""
+        if hvac_mode == HVACMode.OFF:
+            payload = self._build_payload(button="power-off")
+        else:
+            payload = self._build_payload(
+                button="",
+                operation_mode=HVAC_TO_NATURE.get(hvac_mode, self._default_operation_mode()),
+            )
+
+        await self._api.async_set_aircon_settings(self._appliance_id, payload)
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_on(self) -> None:
+        """Turn the entity on."""
+        mode = self.hvac_mode
+        if mode == HVACMode.OFF:
+            mode = next(
+                (candidate for candidate in self.hvac_modes if candidate != HVACMode.OFF),
+                HVACMode.AUTO,
+            )
+        await self.async_set_hvac_mode(mode)
+
+    async def async_turn_off(self) -> None:
+        """Turn the entity off."""
+        await self.async_set_hvac_mode(HVACMode.OFF)
+
+    @property
+    def _appliance(self) -> dict[str, Any] | None:
+        return self.coordinator.data.appliances_by_id.get(self._appliance_id)
+
+    @property
+    def _settings(self) -> dict[str, Any] | None:
+        appliance = self._appliance or {}
+        return appliance.get("settings")
+
+    @property
+    def _aircon_range(self) -> dict[str, Any]:
+        appliance = self._appliance or {}
+        aircon = appliance.get("aircon") or {}
+        return aircon.get("range") or {}
+
+    def _default_operation_mode(self) -> str:
+        current_mode = (self._settings or {}).get("mode")
+        if current_mode:
+            return current_mode
+
+        modes = self._aircon_range.get("modes") or {}
+        if modes:
+            return next(iter(modes))
+        return "auto"
+
+    def _default_temperature(self, operation_mode: str | None = None) -> str:
+        current_temperature = (self._settings or {}).get("temp")
+        if current_temperature not in (None, ""):
+            return str(current_temperature)
+
+        temperatures = self._available_temperatures(operation_mode)
+        if temperatures:
+            raw = temperatures[0]
+            return str(int(raw) if raw.is_integer() else raw)
+        return ""
+
+    def _available_temperatures(self, operation_mode: str | None = None) -> list[float]:
+        mode = operation_mode or self._default_operation_mode()
+        modes = self._aircon_range.get("modes") or {}
+        raw_temperatures = (modes.get(mode) or {}).get("temp") or []
+        temperatures: list[float] = []
+        for raw in raw_temperatures:
+            try:
+                temperatures.append(float(raw))
+            except (TypeError, ValueError):
+                continue
+        return temperatures
+
+    def _build_payload(
+        self,
+        *,
+        button: str | None = None,
+        operation_mode: str | None = None,
+        temperature: str | None = None,
+    ) -> dict[str, str]:
+        settings = self._settings or {}
+        mode = operation_mode or self._default_operation_mode()
+        return {
+            "button": settings.get("button", "") if button is None else button,
+            "operation_mode": mode,
+            "temperature": temperature or self._default_temperature(mode),
+            "temperature_unit": settings.get("temp_unit")
+            or (self._appliance or {}).get("aircon", {}).get("tempUnit", "c"),
+            "air_volume": settings.get("vol", ""),
+            "air_direction": settings.get("dir", ""),
+            "air_direction_h": settings.get("dirh", ""),
+        }

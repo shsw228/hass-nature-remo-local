@@ -1,0 +1,42 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Nature Remo",
+        "description": "Enter a Nature Remo Cloud API access token.",
+        "data": {
+          "access_token": "Access token",
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to the Nature Remo API",
+      "invalid_auth": "Invalid access token",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This Nature account is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Nature Remo options",
+        "data": {
+          "scan_interval": "Update interval (seconds)"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "temperature": {
+        "name": "Temperature"
+      },
+      "humidity": {
+        "name": "Humidity"
+      }
+    }
+  }
+}

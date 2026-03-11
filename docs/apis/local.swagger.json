@@ -1,0 +1,95 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Nature Remo Local API",
+    "description": "This is the local API available on Remo.\n\nOpenAPI Spec: [swagger.yml](./swagger.yml)\nWhen the HTTP client is within the same local network with Remo, the client can discover and resolve IP of Remo using Bonjour, and then send a HTTP request to the IP.\n\n## Bonjour\n\n### dns-sd\n\nDiscover Remo using `_remo._tcp` service via `dns-sd`.\n\n<pre>\n% dns-sd -B _remo._tcp\nBrowsing for _remo._tcp\nDATE: ---Wed 15 Nov 2017---\n12:27:52.349  ...STARTING...\nTimestamp     A/R    Flags  if Domain               Service Type         Instance Name\n12:27:52.603  Add        2  12 local.               _remo._tcp.          Nature-2W3XXXXXX\n</pre>\n\nObtain the Hostname from the Instance Name.\n\n<pre>\n% dns-sd -L Nature-2W3XXXXXX _remo._tcp \nLookup Nature-2W3XXXXXX._remo._tcp.local\nDATE: ---Wed 15 Nov 2017---\n12:28:40.179  ...STARTING...\n12:28:40.358  Nature-2W3XXXXXX._remo._tcp.local. can be reached at XXXXXXXXXXXX.local.:80 (interface 14)    \n</pre>\n\nResolve IP.\n\n<pre>\n% dns-sd -G v4 XXXXXXXXXXXX.local\nDATE: ---Wed 15 Nov 2017---\n12:30:58.520  ...STARTING...\nTimestamp     A/R Flags if Hostname                               Address                                      TTL\n12:30:58.735  Add     2 12 XXXXXXXXXXXX.local.                    10.0.1.3                                     120\n</pre>\n\n### avahi-browse\n\nUse `avahi-browse` instead of `dns-sd` if not available.\n\n<pre>\n$ avahi-browse -rt _remo._tcp\n+ wlp0sxxxx IPv6 Nature-2W3XXXXXX                              _remo._tcp           local\n+ wlp0sxxxx IPv4 Nature-2W3XXXXXX                              _remo._tcp           local\n= wlp0sxxxx IPv6 Nature-2W3XXXXXX                              _remo._tcp           local\n  hostname = [XXXXXXXXXXXX.local]\n  address = [192.168.x.y]\n  port = [80]\n  txt = []\n= wlp0sxxxx IPv4 Nature-2W3XXXXXX                              _remo._tcp           local\n  hostname = [XXXXXXXXXXXX.local]\n  address = [192.168.x.y]\n  port = [80]\n  txt = []\n</pre>\n\n## Limitations\n* The `X-Requested-With` header is required for all endpoints.\n* Remo does not support `Expect` HTTP request header. Always directly send the HTTP body. In curl, use `-H \"Expect: \"` to achieve this behaviour.\n"
+  },
+  "host": "remo.local",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/messages": {
+      "get": {
+        "description": "Fetch the newest received IR signal",
+        "schemes": [
+          "http"
+        ],
+        "responses": {
+          "200": {
+            "description": "IR signal",
+            "schema": {
+              "$ref": "#/definitions/IRSignal"
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Emit IR signals provided by request body",
+        "schemes": [
+          "http"
+        ],
+        "parameters": [
+          {
+            "name": "message",
+            "in": "body",
+            "description": "JSON serialized object describing infrared signals. Includes \"data\", \"freq\" and \"format\" keys.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/IRSignal"
+            },
+            "x-example": "{\\\"freq\\\":38,\\\"data\\\":[2523,2717,786,903,777,924,763,1964,768,1958,769,1955,772,1953,773,914,770,902,786,54147,2523,2721,782,920,761,924,773,1936,779,1948,784,1957,768,1942,784,921,758,924,772],\\\"format\\\":\\\"us\\\"}\n"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully sent"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "IRSignal": {
+      "type": "object",
+      "properties": {
+        "freq": {
+          "$ref": "#/definitions/Freq"
+        },
+        "data": {
+          "$ref": "#/definitions/Data"
+        },
+        "format": {
+          "$ref": "#/definitions/Format"
+        }
+      }
+    },
+    "Freq": {
+      "description": "IR sub carrier frequency.",
+      "type": "integer",
+      "minimum": 30,
+      "maximum": 80,
+      "default": 38
+    },
+    "Format": {
+      "description": "Format and unit of values in the data array. Fixed to `us`, which means each integer of data array is in microseconds.",
+      "type": "string",
+      "default": "us"
+    },
+    "Data": {
+      "description": "IR signal consists of on/off of sub carrier frequency. When receiving IR, Remo measures on to off, off to on time intervals and records the time interval sequence. When sending IR, Remo turns on/off the sub carrier frequency with the provided time interval sequence.",
+      "type": "array",
+      "items": {
+        "type": "integer"
+      }
+    }
+  }
+}

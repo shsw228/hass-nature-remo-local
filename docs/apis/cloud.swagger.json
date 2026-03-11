@@ -1,0 +1,4340 @@
+{
+  "components": {
+    "schemas": {
+      "Addr": {
+        "type": "string"
+      },
+      "AirConExtraResponse": {
+        "properties": {
+          "availability": {
+            "type": "string"
+          },
+          "defaultTime": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/ExtraOption"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "description",
+          "type",
+          "availability"
+        ],
+        "type": "object"
+      },
+      "AirConParams_": {
+        "properties": {
+          "air_direction": {
+            "description": "AC air direction. Empty means automatic.",
+            "type": "string"
+          },
+          "air_direction_h": {
+            "description": "AC horizontal air direction.",
+            "type": "string"
+          },
+          "air_volume": {
+            "description": "AC air volume. Empty means automatic. Numbers express the amount of volume. The range of AirVolumes which the air conditioner accepts depends on the air conditioner model and operation mode. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model and operation mode.",
+            "type": "string"
+          },
+          "button": {
+            "description": "Button. Specify 'power-off' always if you want the air conditioner powered off. Empty means powered on.",
+            "type": "string"
+          },
+          "extra": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "AC specific parameters. Pass device-specific options through the extra query string in the form extra.$id=$value. Valid id / value pairs correspond to the entries returned in ApplianceResponse.extras. Only IDs whose availability field is available may be specified.",
+            "nullable": true,
+            "type": "object"
+          },
+          "operation_mode": {
+            "description": "AC operation mode. The range of operation modes which the air conditioner accepts depends on the air conditioner model. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model.",
+            "type": "string"
+          },
+          "temperature": {
+            "description": "Temperature. The temperature in string format. The unit is described in Aircon object. The range of Temperatures which the air conditioner accepts depends on the air conditioner model and operation mode. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model and operation mode.",
+            "type": "string"
+          },
+          "temperature_unit": {
+            "description": "Temperature unit. 'c' or 'f' or '' for unknown.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "temperature",
+          "temperature_unit",
+          "operation_mode",
+          "air_volume",
+          "air_direction",
+          "air_direction_h",
+          "button"
+        ],
+        "type": "object"
+      },
+      "AirConRangeResponse": {
+        "properties": {
+          "extras": {
+            "items": {
+              "$ref": "#/components/schemas/AirConExtraResponse"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "fixedButtons": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "modes": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RangeResponse_Mode"
+            },
+            "nullable": true,
+            "type": "object"
+          }
+        },
+        "required": [
+          "modes",
+          "fixedButtons"
+        ],
+        "type": "object"
+      },
+      "AirConResponse": {
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/AirConRangeResponse"
+          },
+          "tempUnit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "range",
+          "tempUnit"
+        ],
+        "type": "object"
+      },
+      "AirDirectionHRange": {
+        "items": {
+          "type": "string"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "AirDirectionRange": {
+        "items": {
+          "type": "string"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "AirVolumeRange": {
+        "items": {
+          "type": "string"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "AirconSEMResponse": {
+        "properties": {
+          "adjusting": {
+            "type": "boolean"
+          },
+          "area": {
+            "$ref": "#/components/schemas/Area"
+          },
+          "campaign_slug": {
+            "$ref": "#/components/schemas/CampaignSlug"
+          },
+          "enabled": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled",
+          "area",
+          "campaign_slug",
+          "adjusting"
+        ],
+        "type": "object"
+      },
+      "AirconSettingsResponse": {
+        "properties": {
+          "button": {
+            "description": "Button. Specify 'power-off' always if you want the air conditioner powered off. Empty means powered on.",
+            "type": "string"
+          },
+          "dir": {
+            "description": "AC air direction. Empty means automatic.",
+            "type": "string"
+          },
+          "dirh": {
+            "description": "AC horizontal air direction.",
+            "type": "string"
+          },
+          "extra": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "AC specific parameters. Pass device-specific options through the extra query string in the form extra.$id=$value. Valid id / value pairs correspond to the entries returned in ApplianceResponse.extras. Only IDs whose availability field is available may be specified.",
+            "nullable": true,
+            "type": "object"
+          },
+          "mode": {
+            "description": "AC operation mode. The range of operation modes which the air conditioner accepts depends on the air conditioner model. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model.",
+            "type": "string"
+          },
+          "temp": {
+            "description": "Temperature. The temperature in string format. The unit is described in Aircon object. The range of Temperatures which the air conditioner accepts depends on the air conditioner model and operation mode. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model and operation mode.",
+            "type": "string"
+          },
+          "temp_unit": {
+            "description": "Temperature unit. 'c' or 'f' or '' for unknown.",
+            "type": "string"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "vol": {
+            "description": "AC air volume. Empty means automatic. Numbers express the amount of volume. The range of AirVolumes which the air conditioner accepts depends on the air conditioner model and operation mode. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model and operation mode.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "temp",
+          "temp_unit",
+          "mode",
+          "vol",
+          "dir",
+          "dirh",
+          "button",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "ApplianceELModel": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "manufacturer",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "ApplianceFloorHeaterModel": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "remote_name": {
+            "type": "string"
+          },
+          "series": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "country",
+          "manufacturer",
+          "remote_name",
+          "series",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "ApplianceLightModel": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "remote_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "country",
+          "manufacturer",
+          "remote_name",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "ApplianceLightProjectorModel": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "remote_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "country",
+          "manufacturer",
+          "remote_name",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "ApplianceModel": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "remote_name": {
+            "type": "string"
+          },
+          "series": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "country",
+          "manufacturer",
+          "remote_name",
+          "series",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "ApplianceModelAndParam": {
+        "properties": {
+          "model": {
+            "$ref": "#/components/schemas/ApplianceModel"
+          },
+          "params": {
+            "$ref": "#/components/schemas/Params"
+          }
+        },
+        "required": [
+          "model",
+          "params"
+        ],
+        "type": "object"
+      },
+      "ApplianceModelAndParams": {
+        "items": {
+          "$ref": "#/components/schemas/ApplianceModelAndParam"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "ApplianceModelUnion": {
+        "nullable": true,
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/ApplianceModel"
+          },
+          {
+            "$ref": "#/components/schemas/ApplianceTVModel"
+          },
+          {
+            "$ref": "#/components/schemas/ApplianceLightModel"
+          },
+          {
+            "$ref": "#/components/schemas/ApplianceELModel"
+          },
+          {
+            "$ref": "#/components/schemas/ApplianceLightProjectorModel"
+          },
+          {
+            "$ref": "#/components/schemas/ApplianceFloorHeaterModel"
+          },
+          {
+            "$ref": "#/components/schemas/BLEModel"
+          }
+        ]
+      },
+      "ApplianceResponse": {
+        "properties": {
+          "aircon": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AirConResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "aircon_smart_eco_mode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AirconSEMResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "ble": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BLEControlItem"
+              }
+            ],
+            "nullable": true
+          },
+          "device": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Device"
+              }
+            ],
+            "description": "The device used to control this appliance. If not bound to a controller device, this represents the device information of the appliance itself.",
+            "nullable": true
+          },
+          "echonetlite": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ELResponse"
+              }
+            ],
+            "description": "The ECHONET lite properties fetched from the appliance. See 'Detailed Requirements for ECHONET Device Objects' for more details. ref. https://echonet.jp/spec_object_rl_en/",
+            "nullable": true
+          },
+          "floor_heater": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/FloorHeaterResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "light": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LightResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "light_projector": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LightProjectorResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "matter_bridged_device_state": {
+            "nullable": true,
+            "type": "string"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ApplianceModelUnion"
+          },
+          "mornin_plus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MorninPlusResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "qrio_lock": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/QrioLockResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "settings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AirconSettingsResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "signals": {
+            "items": {
+              "$ref": "#/components/schemas/Signal"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "smart_meter": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SmartMeterResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "tv": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TVResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "nickname",
+          "image",
+          "model",
+          "signals"
+        ],
+        "type": "object"
+      },
+      "ApplianceResponses": {
+        "items": {
+          "$ref": "#/components/schemas/ApplianceResponse"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "ApplianceTVModel": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "manufacturer": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "remote_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "country",
+          "manufacturer",
+          "remote_name",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "AppliancesUpdateRequest": {
+        "properties": {
+          "image": {
+            "description": "Basename of the image file included in the app. Ex: 'ico_ac_1'.",
+            "type": "string"
+          },
+          "nickname": {
+            "description": "Appliance name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nickname",
+          "image"
+        ],
+        "type": "object"
+      },
+      "Area": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "type": "integer"
+      },
+      "BLEControlItem": {
+        "properties": {
+          "addr": {
+            "type": "string"
+          },
+          "addr_type": {
+            "type": "string"
+          },
+          "bonded": {
+            "type": "boolean"
+          },
+          "hue": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BLEHueLightControlItem"
+              }
+            ],
+            "nullable": true
+          },
+          "macros": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/BLEPrivateMacroResponse"
+            },
+            "nullable": true,
+            "type": "object"
+          },
+          "sesame": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BLESesameControlItem"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "addr",
+          "addr_type",
+          "bonded"
+        ],
+        "type": "object"
+      },
+      "BLEHueLightControlItem": {
+        "properties": {
+          "light_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "light_type"
+        ],
+        "type": "object"
+      },
+      "BLEModel": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "slug",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "BLEPrivateMacroResponse": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "url"
+        ],
+        "type": "object"
+      },
+      "BLEPrivateMacroResponses": {
+        "items": {
+          "$ref": "#/components/schemas/BLEPrivateMacroResponse"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "BLESesameControlItem": {
+        "properties": {
+          "device_type": {
+            "type": "string"
+          },
+          "key_level": {
+            "type": "string"
+          },
+          "user_index": {
+            "items": {
+              "type": "integer"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "uuid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "uuid",
+          "device_type",
+          "key_level",
+          "user_index"
+        ],
+        "type": "object"
+      },
+      "ButtonDBButton": {
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "image",
+          "label"
+        ],
+        "type": "object"
+      },
+      "CampaignSlug": {
+        "type": "string"
+      },
+      "CoreHomeBreakerCapacity": {
+        "description": "Breaker capacity in amperes (A). Must be between 10 and 200.",
+        "maximum": 200,
+        "minimum": 10,
+        "type": "integer"
+      },
+      "CoreSerialNumber": {
+        "description": "Serial number of the device.",
+        "type": "string"
+      },
+      "CreateApplianceRequest": {
+        "properties": {
+          "device": {
+            "type": "string"
+          },
+          "image": {
+            "description": "Basename of the image file included in the app. Ex: 'ico_ac_1'.",
+            "type": "string"
+          },
+          "model": {
+            "description": "ApplianceModel ID if the appliance we're trying to create is included in IRDB.",
+            "type": "string"
+          },
+          "model_type": {
+            "description": "Enum of 'AC', 'TV', 'Light', etc.",
+            "type": "string"
+          },
+          "nickname": {
+            "description": "Appliance name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "nickname",
+          "image",
+          "device",
+          "model",
+          "model_type"
+        ],
+        "type": "object"
+      },
+      "CreateSignalParameters": {
+        "properties": {
+          "image": {
+            "description": "Basename of the image file included in the app. Ex: 'ico_io'.",
+            "type": "string"
+          },
+          "message": {
+            "description": "JSON serialized object describing infrared signals. Includes 'data', 'freq' and 'format' keys.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Signal name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "image",
+          "message"
+        ],
+        "type": "object"
+      },
+      "DetectApplianceRequest": {
+        "properties": {
+          "Device": {
+            "description": "Device UUID. If specified, the detection result will be filtered by device capability.",
+            "nullable": true,
+            "type": "string"
+          },
+          "Message": {
+            "description": "JSON serialized object describing infrared signals. Includes 'data', 'freq' and 'format' keys.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "Message"
+        ],
+        "type": "object"
+      },
+      "Device": {
+        "properties": {
+          "bt_mac_address": {
+            "nullable": true,
+            "type": "string"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "firmware_version": {
+            "type": "string"
+          },
+          "humidity_offset": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "mac_address": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "serial_number": {
+            "$ref": "#/components/schemas/CoreSerialNumber"
+          },
+          "temperature_offset": {
+            "type": "number"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Time"
+          }
+        },
+        "required": [
+          "name",
+          "id",
+          "created_at",
+          "updated_at",
+          "mac_address",
+          "serial_number",
+          "firmware_version",
+          "temperature_offset",
+          "humidity_offset"
+        ],
+        "type": "object"
+      },
+      "DeviceCommissioneeFabricResponse": {
+        "properties": {
+          "cfabric": {
+            "type": "string"
+          },
+          "company_name": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "vendor_name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "cfabric",
+          "vendor_name",
+          "company_name",
+          "label"
+        ],
+        "type": "object"
+      },
+      "DeviceResponse": {
+        "properties": {
+          "bridged_devices_limit": {
+            "nullable": true,
+            "type": "integer"
+          },
+          "bt_mac_address": {
+            "nullable": true,
+            "type": "string"
+          },
+          "commissionee_fabrics": {
+            "items": {
+              "$ref": "#/components/schemas/DeviceCommissioneeFabricResponse"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "commissionee_fabrics_limit": {
+            "nullable": true,
+            "type": "integer"
+          },
+          "created_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "firmware_version": {
+            "type": "string"
+          },
+          "humidity_offset": {
+            "type": "number"
+          },
+          "id": {
+            "type": "string"
+          },
+          "mac_address": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "newest_events": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SensorValue"
+            },
+            "description": "The SensorValue key means 'te' = temperature, 'hu' = humidity, 'il' = illumination, 'mo' = movement. The val of 'mo' is always 1 and when movement event is captured created_at is updated.",
+            "nullable": true,
+            "type": "object"
+          },
+          "online": {
+            "nullable": true,
+            "type": "boolean"
+          },
+          "serial_number": {
+            "$ref": "#/components/schemas/CoreSerialNumber"
+          },
+          "temperature_offset": {
+            "type": "number"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "users": {
+            "description": "Deprecated. Do not use in new code.",
+            "items": {
+              "$ref": "#/components/schemas/UserDeviceResponse"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "name",
+          "id",
+          "created_at",
+          "updated_at",
+          "mac_address",
+          "serial_number",
+          "firmware_version",
+          "temperature_offset",
+          "humidity_offset",
+          "newest_events"
+        ],
+        "type": "object"
+      },
+      "DeviceResponses": {
+        "items": {
+          "$ref": "#/components/schemas/DeviceResponse"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "DevicesDeleteRequest": {
+        "type": "object"
+      },
+      "DevicesDeleteResponse": {
+        "type": "object"
+      },
+      "DevicesUpdateRequest": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "ELManufacturer": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "name"
+        ],
+        "type": "object"
+      },
+      "ELPropertyResponse": {
+        "properties": {
+          "epc": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "val": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "epc",
+          "val",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "ELResponse": {
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string"
+          },
+          "ip": {
+            "nullable": true,
+            "type": "string"
+          },
+          "manufacturer": {
+            "$ref": "#/components/schemas/ELManufacturer"
+          },
+          "route_type": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier",
+          "manufacturer",
+          "route_type",
+          "version",
+          "instance"
+        ],
+        "type": "object"
+      },
+      "EchonetLiteAppliance": {
+        "properties": {
+          "Device": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Device"
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "properties": {
+            "items": {
+              "$ref": "#/components/schemas/PropertyRow"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nickname",
+          "type",
+          "properties"
+        ],
+        "type": "object"
+      },
+      "EchonetLiteApplianceResponse": {
+        "properties": {
+          "appliances": {
+            "items": {
+              "$ref": "#/components/schemas/EchonetLiteAppliance"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "appliances"
+        ],
+        "type": "object"
+      },
+      "EmptyObject": {
+        "type": "object"
+      },
+      "ExtraOption": {
+        "properties": {
+          "default": {
+            "type": "boolean"
+          },
+          "text": {
+            "$ref": "#/components/schemas/ExtraOptionText"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "text"
+        ],
+        "type": "object"
+      },
+      "ExtraOptionText": {
+        "type": "string"
+      },
+      "FloorHeaterResponse": {
+        "properties": {
+          "range": {
+            "$ref": "#/components/schemas/AirConRangeResponse"
+          },
+          "tempUnit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "range",
+          "tempUnit"
+        ],
+        "type": "object"
+      },
+      "HexBytes": {
+        "items": {
+          "type": "integer"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "Home": {
+        "properties": {
+          "breaker_capacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CoreHomeBreakerCapacity"
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object"
+      },
+      "HomeInvite": {
+        "properties": {
+          "home": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Home"
+              }
+            ],
+            "nullable": true
+          },
+          "url": {
+            "type": "string"
+          },
+          "user": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/User"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "type": "object"
+      },
+      "HomeParams": {
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "HomeResponse": {
+        "properties": {
+          "breaker_capacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CoreHomeBreakerCapacity"
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "location": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "town": {
+            "$ref": "#/components/schemas/TownResponse"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/MemberResponse"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "town",
+          "users"
+        ],
+        "type": "object"
+      },
+      "HomeResponses": {
+        "items": {
+          "$ref": "#/components/schemas/HomeResponse"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "HomeUserParams": {
+        "properties": {
+          "user": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "user"
+        ],
+        "type": "object"
+      },
+      "HomesDeleteLocationRequest": {
+        "type": "object"
+      },
+      "HomesDeleteLocationResponse": {
+        "properties": {
+          "breaker_capacity": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CoreHomeBreakerCapacity"
+              }
+            ],
+            "nullable": true
+          },
+          "id": {
+            "type": "string"
+          },
+          "location": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LocationResponse"
+              }
+            ],
+            "nullable": true
+          },
+          "name": {
+            "type": "string"
+          },
+          "town": {
+            "$ref": "#/components/schemas/TownResponse"
+          },
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/MemberResponse"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "town",
+          "users"
+        ],
+        "type": "object"
+      },
+      "HumidityOffsetParams": {
+        "properties": {
+          "offset": {
+            "description": "Humidity offset value added to the measured humidity.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "offset"
+        ],
+        "type": "object"
+      },
+      "LightParams": {
+        "properties": {
+          "button": {
+            "description": "Button name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "button"
+        ],
+        "type": "object"
+      },
+      "LightProjectorParams": {
+        "properties": {
+          "button": {
+            "description": "Button name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "button"
+        ],
+        "type": "object"
+      },
+      "LightProjectorResponse": {
+        "properties": {
+          "layout": {
+            "$ref": "#/components/schemas/LightProjectordbLayout"
+          }
+        },
+        "required": [
+          "layout"
+        ],
+        "type": "object"
+      },
+      "LightProjectordbLayout": {
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templates": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Template"
+                }
+              ],
+              "nullable": true
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "x_size": {
+            "type": "integer"
+          },
+          "y_size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "name",
+          "uuid",
+          "image",
+          "label",
+          "text",
+          "x_size",
+          "y_size",
+          "templates"
+        ],
+        "type": "object"
+      },
+      "LightResponse": {
+        "properties": {
+          "buttons": {
+            "items": {
+              "$ref": "#/components/schemas/ButtonDBButton"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "state": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LightState"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "buttons"
+        ],
+        "type": "object"
+      },
+      "LightState": {
+        "properties": {
+          "brightness": {
+            "type": "string"
+          },
+          "last_button": {
+            "type": "string"
+          },
+          "power": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "brightness",
+          "power",
+          "last_button"
+        ],
+        "type": "object"
+      },
+      "LinkText": {
+        "properties": {
+          "link": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "link"
+        ],
+        "type": "object"
+      },
+      "LocationResponse": {
+        "properties": {
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "radius": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "latitude",
+          "longitude",
+          "radius"
+        ],
+        "type": "object"
+      },
+      "MemberResponse": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "joined_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "location_state": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nickname",
+          "role",
+          "location_state",
+          "joined_at"
+        ],
+        "type": "object"
+      },
+      "MorninPlusDeviceResponse": {
+        "properties": {
+          "active": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "image",
+          "name",
+          "active"
+        ],
+        "type": "object"
+      },
+      "MorninPlusResponse": {
+        "properties": {
+          "devices": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/MorninPlusDeviceResponse"
+                }
+              ],
+              "nullable": true
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "hi_speed_mode": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "devices",
+          "hi_speed_mode"
+        ],
+        "type": "object"
+      },
+      "Params": {
+        "properties": {
+          "button": {
+            "description": "Button. Specify 'power-off' always if you want the air conditioner powered off. Empty means powered on.",
+            "type": "string"
+          },
+          "dir": {
+            "description": "AC air direction. Empty means automatic.",
+            "type": "string"
+          },
+          "dirh": {
+            "description": "AC horizontal air direction.",
+            "type": "string"
+          },
+          "extra": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "AC specific parameters. Pass device-specific options through the extra query string in the form extra.$id=$value. Valid id / value pairs correspond to the entries returned in ApplianceResponse.extras. Only IDs whose availability field is available may be specified.",
+            "nullable": true,
+            "type": "object"
+          },
+          "mode": {
+            "description": "AC operation mode. The range of operation modes which the air conditioner accepts depends on the air conditioner model. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model.",
+            "type": "string"
+          },
+          "temp": {
+            "description": "Temperature. The temperature in string format. The unit is described in Aircon object. The range of Temperatures which the air conditioner accepts depends on the air conditioner model and operation mode. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model and operation mode.",
+            "type": "string"
+          },
+          "temp_unit": {
+            "description": "Temperature unit. 'c' or 'f' or '' for unknown.",
+            "type": "string"
+          },
+          "vol": {
+            "description": "AC air volume. Empty means automatic. Numbers express the amount of volume. The range of AirVolumes which the air conditioner accepts depends on the air conditioner model and operation mode. Check the 'AirConRangeMode' information in the response for the range of the particular air conditioner model and operation mode.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "temp",
+          "temp_unit",
+          "mode",
+          "vol",
+          "dir",
+          "dirh",
+          "button"
+        ],
+        "type": "object"
+      },
+      "PowerDistBoard": {
+        "properties": {
+          "channels": {
+            "description": "List of channels",
+            "items": {
+              "$ref": "#/components/schemas/PowerDistBoardChannel"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "channels"
+        ],
+        "type": "object"
+      },
+      "PowerDistBoardChannel": {
+        "properties": {
+          "appliance_name": {
+            "description": "Appliance name (max 40 chars)",
+            "type": "string"
+          },
+          "number": {
+            "description": "Channel number (1-252)",
+            "type": "integer"
+          },
+          "room_name": {
+            "description": "Room name (max 40 chars)",
+            "type": "string"
+          }
+        },
+        "required": [
+          "number",
+          "room_name",
+          "appliance_name"
+        ],
+        "type": "object"
+      },
+      "PowerDistBoardOptions": {
+        "properties": {
+          "appliance_names": {
+            "description": "Appliance name options",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "room_names": {
+            "description": "Room name options",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "appliance_names",
+          "room_names"
+        ],
+        "type": "object"
+      },
+      "PowerDistDashboard": {
+        "properties": {
+          "options": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PowerDistBoardOptions"
+              }
+            ],
+            "description": "Channel name options"
+          },
+          "power_dist_board": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PowerDistBoard"
+              }
+            ],
+            "description": "Power distribution board data"
+          }
+        },
+        "required": [
+          "power_dist_board",
+          "options"
+        ],
+        "type": "object"
+      },
+      "PrivacyPolicyRevisionOutline": {
+        "properties": {
+          "body": {
+            "type": "string"
+          },
+          "links": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/LinkText"
+            },
+            "nullable": true,
+            "type": "object"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "body",
+          "links"
+        ],
+        "type": "object"
+      },
+      "PropertyRow": {
+        "properties": {
+          "epc": {
+            "type": "string"
+          },
+          "updated_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "val": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "epc",
+          "val",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "QrioLockDeviceResponse": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "image": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "image",
+          "name"
+        ],
+        "type": "object"
+      },
+      "QrioLockResponse": {
+        "properties": {
+          "bd_address": {
+            "type": "string"
+          },
+          "device": {
+            "$ref": "#/components/schemas/QrioLockDeviceResponse"
+          },
+          "is_available": {
+            "type": "boolean"
+          },
+          "sub_bd_address": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "device",
+          "bd_address",
+          "is_available"
+        ],
+        "type": "object"
+      },
+      "RangeResponse_Mode": {
+        "properties": {
+          "dir": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "dirh": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "temp": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "vol": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "temp",
+          "dir",
+          "dirh",
+          "vol"
+        ],
+        "type": "object"
+      },
+      "RefreshELPropertyRequest": {
+        "properties": {
+          "epc": {
+            "description": "Comma separated EPCs in hex. eg: cf,da",
+            "type": "string"
+          }
+        },
+        "required": [
+          "epc"
+        ],
+        "type": "object"
+      },
+      "ReorderAppliancesParams": {
+        "properties": {
+          "appliances": {
+            "description": "List of all appliance IDs, comma separated.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "appliances"
+        ],
+        "type": "object"
+      },
+      "ReorderSignalsParams": {
+        "properties": {
+          "signals": {
+            "description": "List of all signal IDs, comma separated.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "signals"
+        ],
+        "type": "object"
+      },
+      "SensorValue": {
+        "properties": {
+          "created_at": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "val": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "val",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "SetELPropertyRequest": {
+        "properties": {
+          "epc": {
+            "description": "EPC in hex string. eg: cf",
+            "type": "string"
+          },
+          "val": {
+            "description": "Value in hex string. String length must be 2x the number of bytes according to ECHONET Lite spec, and filled with zero if necessary. eg: 000000FF",
+            "type": "string"
+          }
+        },
+        "required": [
+          "epc",
+          "val"
+        ],
+        "type": "object"
+      },
+      "Signal": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "Signals": {
+        "items": {
+          "$ref": "#/components/schemas/Signal"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "SmartMeterResponse": {
+        "properties": {
+          "echonetlite_properties": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/ELPropertyResponse"
+                }
+              ],
+              "nullable": true
+            },
+            "nullable": true,
+            "type": "array"
+          }
+        },
+        "required": [
+          "echonetlite_properties"
+        ],
+        "type": "object"
+      },
+      "TVParams": {
+        "properties": {
+          "button": {
+            "description": "Button name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "button"
+        ],
+        "type": "object"
+      },
+      "TVResponse": {
+        "properties": {
+          "buttons": {
+            "items": {
+              "$ref": "#/components/schemas/ButtonDBButton"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "layout": {
+            "items": {
+              "$ref": "#/components/schemas/TvdbRowLayout"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "state": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TVState"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "buttons"
+        ],
+        "type": "object"
+      },
+      "TVState": {
+        "properties": {
+          "input": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "input"
+        ],
+        "type": "object"
+      },
+      "TemperatureOffsetParams": {
+        "properties": {
+          "offset": {
+            "description": "Temperature offset value added to the measured temperature.",
+            "type": "number"
+          }
+        },
+        "required": [
+          "offset"
+        ],
+        "type": "object"
+      },
+      "Template": {
+        "properties": {
+          "image": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "templates": {
+            "items": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Template"
+                }
+              ],
+              "nullable": true
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "text": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "x_size": {
+            "type": "integer"
+          },
+          "y_size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "name",
+          "uuid",
+          "image",
+          "label",
+          "text",
+          "x_size",
+          "y_size",
+          "templates"
+        ],
+        "type": "object"
+      },
+      "Time": {
+        "format": "date-time",
+        "type": "string"
+      },
+      "TownResponse": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "latitude": {
+            "type": "number"
+          },
+          "longitude": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "origin": {
+            "type": "string"
+          },
+          "prefecture": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "longitude",
+          "latitude",
+          "id",
+          "name",
+          "prefecture",
+          "origin"
+        ],
+        "type": "object"
+      },
+      "TransferRequest": {
+        "properties": {
+          "devices": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "devices"
+        ],
+        "type": "object"
+      },
+      "TvdbRowLayout": {
+        "properties": {
+          "buttons": {
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "type": "array"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "buttons"
+        ],
+        "type": "object"
+      },
+      "UUID": {
+        "type": "string"
+      },
+      "UpdateProfileParam": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "distance_unit": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "temp_unit": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nickname",
+          "temp_unit",
+          "distance_unit",
+          "country"
+        ],
+        "type": "object"
+      },
+      "UpdateSignalParameters": {
+        "properties": {
+          "image": {
+            "description": "Basename of the image file included in the app. Ex: 'ico_io'.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Signal name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "image"
+        ],
+        "type": "object"
+      },
+      "User": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nickname"
+        ],
+        "type": "object"
+      },
+      "UserAndRole": {
+        "properties": {
+          "role": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        },
+        "required": [
+          "user",
+          "role"
+        ],
+        "type": "object"
+      },
+      "UserAndRoles": {
+        "items": {
+          "$ref": "#/components/schemas/UserAndRole"
+        },
+        "nullable": true,
+        "type": "array"
+      },
+      "UserDeviceResponse": {
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "superuser": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "nickname",
+          "superuser"
+        ],
+        "type": "object"
+      },
+      "UserResponse": {
+        "properties": {
+          "country": {
+            "type": "string"
+          },
+          "distance_unit": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "temp_unit": {
+            "type": "string"
+          },
+          "updated_privacy_policy": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PrivacyPolicyRevisionOutline"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "nickname"
+        ],
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "oauth2": {
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://api.nature.global/oauth2/auth",
+            "scopes": {
+              "automation": "Read and write automation information",
+              "basic": "Read and write your profile (not including E-mail) and home appliances",
+              "basic.read": "Read only access to your profile (not including E-mail), Nature Remo, home appliances and signals",
+              "detectappliance": "Detect air conditioner model from infrared signals",
+              "echonetlite": "Use ECHONET Lite to monitor and control home appliances",
+              "echonetlite.*.read": "Read ECHONET Lite data",
+              "elapi": "Use ECHONET Lite API",
+              "home": "Read and write user's home information",
+              "home.read": "Read only access to user's home information",
+              "openid": "Get Nature user ID (not including E-mail)",
+              "sendir": "Send IR signals and control home appliances",
+              "sendrawir": "Send raw IR signals directly to your home appliances",
+              "tokens": "Read and write access tokens",
+              "userdelete": "Delete user"
+            },
+            "tokenUrl": "https://api.nature.global/oauth2/token"
+          }
+        },
+        "type": "oauth2"
+      }
+    }
+  },
+  "info": {
+    "description": "Read/Write Nature Remo\n\nOpenAPI Spec: [swagger.json](./swagger.json)",
+    "title": "Nature API",
+    "version": "2.0.0"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/1/appliance_orders": {
+      "post": {
+        "description": "Reorder appliances.\nRequires basic.write OAuth2 scopes.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderAppliancesParams"
+              }
+            }
+          },
+          "description": "ReorderAppliancesParams",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances": {
+      "get": {
+        "description": "Fetch the list of appliances.\nRequires basic.read OAuth2 scopes.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceResponses"
+                }
+              }
+            },
+            "description": "ApplianceResponses"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "description": "Create a new appliance.\nRequires basic.write OAuth2 scopes.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApplianceRequest"
+              }
+            }
+          },
+          "description": "CreateApplianceRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceResponse"
+                }
+              }
+            },
+            "description": "ApplianceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}": {
+      "post": {
+        "description": "Update an appliance.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/AppliancesUpdateRequest"
+              }
+            }
+          },
+          "description": "UpdateRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceResponse"
+                }
+              }
+            },
+            "description": "ApplianceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/aircon_settings": {
+      "post": {
+        "description": "Update air conditioner settings.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/AirConParams_"
+              }
+            }
+          },
+          "description": "AirConParams_",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AirconSettingsResponse"
+                }
+              }
+            },
+            "description": "AC settings."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/delete": {
+      "post": {
+        "description": "Delete an appliance.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/EmptyObject"
+              }
+            }
+          },
+          "description": "EmptyObject",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/floor_heater_settings": {
+      "post": {
+        "description": "Update floor heater settings.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/AirConParams_"
+              }
+            }
+          },
+          "description": "AirConParams_",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceResponse"
+                }
+              }
+            },
+            "description": "ApplianceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/light": {
+      "post": {
+        "description": "Send light signal.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/LightParams"
+              }
+            }
+          },
+          "description": "Light parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LightState"
+                }
+              }
+            },
+            "description": "Light state."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/light_projector": {
+      "post": {
+        "description": "Send light_projector signal.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/LightProjectorParams"
+              }
+            }
+          },
+          "description": "LightProjector parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/power_dist_board": {
+      "get": {
+        "description": "Fetch the power distribution board dashboard for an appliance.\nRequires basic.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PowerDistDashboard"
+                }
+              }
+            },
+            "description": "Power distribution board dashboard"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/power_dist_board/channel": {
+      "post": {
+        "description": "Update a power distribution board channel name.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/PowerDistBoardChannel"
+              }
+            }
+          },
+          "description": "PowerDistBoardChannel",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PowerDistBoardChannel"
+                }
+              }
+            },
+            "description": "PowerDistBoardChannel"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/sesame_bot/click": {
+      "post": {
+        "description": "Send SESAME bot click request.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/signal_orders": {
+      "post": {
+        "description": "Reorder signals.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/ReorderSignalsParams"
+              }
+            }
+          },
+          "description": "ReorderSignalsParams",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/signals": {
+      "get": {
+        "description": "Fetch the list of signals.\nRequires basic.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Signals"
+                }
+              }
+            },
+            "description": "Signals"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "description": "Create a new signal.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSignalParameters"
+              }
+            }
+          },
+          "description": "Signal parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Signal"
+                }
+              }
+            },
+            "description": "Signal"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/appliances/{applianceid}/tv": {
+      "post": {
+        "description": "Send TV signal.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TVParams"
+              }
+            }
+          },
+          "description": "TV parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TVState"
+                }
+              }
+            },
+            "description": "TV state."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/ble/appliances/{applianceid}/private_macros": {
+      "get": {
+        "description": "Fetch the list of ble_private_macros.\nRequires basic.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BLEPrivateMacroResponses"
+                }
+              }
+            },
+            "description": "BLEPrivateMacroResponses"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/ble/private_macros/{privatemacroid}/exec": {
+      "post": {
+        "description": "Send BLE Private Macro control request.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "BLE Private Macro ID",
+            "in": "path",
+            "name": "privatemacroid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/detectappliance": {
+      "post": {
+        "description": "Find the air conditioner best matching the provided infrared signal.\nRequires detectappliance OAuth2 scopes.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/DetectApplianceRequest"
+              }
+            }
+          },
+          "description": "DetectApplianceRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceModelAndParams"
+                }
+              }
+            },
+            "description": "List of air conditioner model and settings. Best match comes first."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "detectappliance"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/devices": {
+      "get": {
+        "description": "Fetch the list of Remo devices.\nRequires basic.read OAuth2 scopes.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponses"
+                }
+              }
+            },
+            "description": "DeviceResponses"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/devices/{deviceid}": {
+      "post": {
+        "description": "Update a device.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Device Id",
+            "in": "path",
+            "name": "deviceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/DevicesUpdateRequest"
+              }
+            }
+          },
+          "description": "UpdateRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Device"
+                }
+              }
+            },
+            "description": "Device"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/devices/{deviceid}/appliances": {
+      "get": {
+        "description": "Fetch the list of appliances registered to the Remo device.\nRequires basic.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Device Id",
+            "in": "path",
+            "name": "deviceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceResponses"
+                }
+              }
+            },
+            "description": "ApplianceResponses"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/devices/{deviceid}/delete": {
+      "post": {
+        "description": "Delete a device.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Device Id",
+            "in": "path",
+            "name": "deviceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/DevicesDeleteRequest"
+              }
+            }
+          },
+          "description": "DeleteRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DevicesDeleteResponse"
+                }
+              }
+            },
+            "description": "DeleteResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/devices/{deviceid}/humidity_offset": {
+      "post": {
+        "description": "Update a device's humidity offset.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Device Id",
+            "in": "path",
+            "name": "deviceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/HumidityOffsetParams"
+              }
+            }
+          },
+          "description": "Humidity offset parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponse"
+                }
+              }
+            },
+            "description": "DeviceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/devices/{deviceid}/temperature_offset": {
+      "post": {
+        "description": "Update a device's temperature offset.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Device Id",
+            "in": "path",
+            "name": "deviceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TemperatureOffsetParams"
+              }
+            }
+          },
+          "description": "Temperature offset parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponse"
+                }
+              }
+            },
+            "description": "DeviceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/echonetlite/appliances": {
+      "get": {
+        "description": "Fetch the list of ECHONET Lite appliances.\nRequires basic.read OAuth2 scopes.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EchonetLiteApplianceResponse"
+                }
+              }
+            },
+            "description": "EchonetLiteApplianceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/echonetlite/appliances/{applianceid}/refresh": {
+      "post": {
+        "description": "Notify Remo E / Remo E lite to refresh one or more ECHONET Lite properties. This endpoint is subject to ECHONET Lite specific rate limiting. See the rate limiting section of the documentation for more details.\nRequires echonetlite.*.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshELPropertyRequest"
+              }
+            }
+          },
+          "description": "RefreshELPropertyRequest",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "echonetlite.*.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/echonetlite/appliances/{applianceid}/set": {
+      "post": {
+        "description": "Set one ECHONET Lite property. This endpoint is subject to ECHONET Lite specific rate limiting. See the rate limiting section of the documentation for more details.\nRequires echonetlite.*.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/SetELPropertyRequest"
+              }
+            }
+          },
+          "description": "SetELPropertyRequest",
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "echonetlite.*.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes": {
+      "get": {
+        "description": "Fetch the list of homes.\nRequires home.read OAuth2 scopes.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeResponses"
+                }
+              }
+            },
+            "description": "HomeResponses"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.read"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "description": "Create a new home.\nRequires home.write OAuth2 scopes.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/HomeParams"
+              }
+            }
+          },
+          "description": "HomeParams",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeResponse"
+                }
+              }
+            },
+            "description": "HomeResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}": {
+      "post": {
+        "description": "Update a home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/HomeParams"
+              }
+            }
+          },
+          "description": "HomeParams",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeResponse"
+                }
+              }
+            },
+            "description": "HomeResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/delete": {
+      "post": {
+        "description": "Delete a home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/devices": {
+      "get": {
+        "description": "Fetch the list of devices in a home.\nRequires home.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceResponses"
+                }
+              }
+            },
+            "description": "DeviceResponses"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/invites": {
+      "post": {
+        "description": "Create a new home invite.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeInvite"
+                }
+              }
+            },
+            "description": "HomeInvite"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/kick": {
+      "post": {
+        "description": "Kick a user from a home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/HomeUserParams"
+              }
+            }
+          },
+          "description": "HomeUserParams",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/location": {
+      "post": {
+        "description": "Update a home's location.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeResponse"
+                }
+              }
+            },
+            "description": "HomeResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/location/delete": {
+      "post": {
+        "description": "Delete a home's location.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/HomesDeleteLocationRequest"
+              }
+            }
+          },
+          "description": "DeleteLocationRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomesDeleteLocationResponse"
+                }
+              }
+            },
+            "description": "DeleteLocationResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/location_state/update": {
+      "post": {
+        "description": "Update the user's location state for a home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/owner": {
+      "post": {
+        "description": "Change the owner of the home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/HomeUserParams"
+              }
+            }
+          },
+          "description": "HomeUserParams",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeResponse"
+                }
+              }
+            },
+            "description": "HomeResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/part": {
+      "post": {
+        "description": "Part from a home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/transfer/{tohomeid}": {
+      "post": {
+        "description": "Transfer devices to another home.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Transfer to Home Id",
+            "in": "path",
+            "name": "tohomeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferRequest"
+              }
+            }
+          },
+          "description": "TransferRequest",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/homes/{homeid}/users": {
+      "get": {
+        "description": "Fetch the list of users in a home.\nRequires home.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Home Id",
+            "in": "path",
+            "name": "homeid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAndRoles"
+                }
+              }
+            },
+            "description": "UserAndRoles"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.read"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/invites/{invitetoken}": {
+      "get": {
+        "description": "Show a home invite.\nRequires home.read OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Invite Token",
+            "in": "path",
+            "name": "invitetoken",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeInvite"
+                }
+              }
+            },
+            "description": "HomeInvite"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.read"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "description": "Accept a home invite.\nRequires home.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Invite Token",
+            "in": "path",
+            "name": "invitetoken",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HomeResponse"
+                }
+              }
+            },
+            "description": "HomeResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "home.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/signals/{signalid}": {
+      "post": {
+        "description": "Update a signal.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Signal Id",
+            "in": "path",
+            "name": "signalid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSignalParameters"
+              }
+            }
+          },
+          "description": "Signal parameters.",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Signal"
+                }
+              }
+            },
+            "description": "Signal"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/signals/{signalid}/delete": {
+      "post": {
+        "description": "Delete a signal.\nRequires basic.write OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Signal Id",
+            "in": "path",
+            "name": "signalid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/EmptyObject"
+              }
+            }
+          },
+          "description": "EmptyObject",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/signals/{signalid}/send": {
+      "post": {
+        "description": "Send a signal.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Signal Id",
+            "in": "path",
+            "name": "signalid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/EmptyObject"
+              }
+            }
+          },
+          "description": "EmptyObject",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmptyObject"
+                }
+              }
+            },
+            "description": "EmptyObject"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    },
+    "/1/users/me": {
+      "get": {
+        "description": "Fetch the authenticated user's information.\nRequires basic.read OAuth2 scopes.",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            },
+            "description": "User information."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.read"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "description": "Update authenticated user's information.\nRequires basic.write OAuth2 scopes.",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProfileParam"
+              }
+            }
+          },
+          "description": "UpdateProfileParam",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            },
+            "description": "User information."
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "basic.write"
+            ]
+          }
+        ]
+      }
+    },
+    "/2/appliances/{applianceid}/aircon_settings": {
+      "post": {
+        "description": "Update air conditioner settings.\nRequires sendir OAuth2 scopes.",
+        "parameters": [
+          {
+            "description": "Appliance Id",
+            "in": "path",
+            "name": "applianceid",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/AirConParams_"
+              }
+            }
+          },
+          "description": "AirConParams_",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplianceResponse"
+                }
+              }
+            },
+            "description": "ApplianceResponse"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [
+              "sendir"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "description": "Public API Production",
+      "url": "https://api.nature.global"
+    }
+  ]
+}

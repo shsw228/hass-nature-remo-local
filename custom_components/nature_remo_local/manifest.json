@@ -1,0 +1,12 @@
+{
+  "domain": "nature_remo_local",
+  "name": "Nature Remo Local",
+  "codeowners": ["@shsw228"],
+  "config_flow": true,
+  "documentation": "https://github.com/shsw228/hass-nature-remo-local",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/shsw228/hass-nature-remo-local/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

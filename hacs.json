@@ -1,0 +1,7 @@
+{
+  "name": "Nature Remo Local",
+  "content_in_root": false,
+  "domains": ["nature_remo_local"],
+  "homeassistant": "2024.1.0",
+  "render_readme": true
+}
