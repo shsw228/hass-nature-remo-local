@@ -100,6 +100,7 @@ class NatureRemoDataUpdateCoordinator(DataUpdateCoordinator[NatureRemoSnapshot])
                 self.api.rate_limit.reset_at,
             )
             self._apply_rate_limit_backoff()
+            self.async_update_listeners()
             return False
 
         await self.async_request_refresh()

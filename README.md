@@ -45,6 +45,7 @@ The token needs at least:
 ## Supported Entities
 
 - `sensor`: temperature, humidity
+- `sensor`: temperature, humidity, rate limit diagnostics
 - `climate`: air conditioners
 - `light`: lights supported by Nature Remo Cloud API
 - `button`: individual buttons returned for supported light appliances
@@ -54,6 +55,7 @@ The token needs at least:
 - The current release is Cloud API based. Local API control is not enabled yet.
 - Default polling is `180` seconds.
 - Nature rate limits requests per account. The integration reads `X-Rate-Limit-*` headers and reduces refresh pressure when the remaining budget is low.
+- Diagnostic sensors expose the latest `X-Rate-Limit-Limit`, `X-Rate-Limit-Remaining`, and `X-Rate-Limit-Reset` values.
 - Light on/off currently depends on matching known button names from the Nature Remo API response.
 - Light appliances also expose each available Nature Remo button as a Home Assistant `button` entity.
 

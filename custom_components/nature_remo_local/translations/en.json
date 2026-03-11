@@ -37,6 +37,15 @@
       },
       "humidity": {
         "name": "Humidity"
+      },
+      "rate_limit_remaining": {
+        "name": "Rate Limit Remaining"
+      },
+      "rate_limit_limit": {
+        "name": "Rate Limit Limit"
+      },
+      "rate_limit_reset_at": {
+        "name": "Rate Limit Reset At"
       }
     }
   }

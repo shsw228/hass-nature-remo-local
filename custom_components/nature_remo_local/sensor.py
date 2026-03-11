@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 from homeassistant.components.sensor import (
@@ -14,6 +15,7 @@ from homeassistant.components.sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import PERCENTAGE, UnitOfTemperature
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -28,6 +30,13 @@ class NatureRemoSensorDescription(SensorEntityDescription):
     """Describe a Nature Remo sensor."""
 
     event_key: str
+
+
+@dataclass(frozen=True, kw_only=True)
+class NatureRemoRateLimitSensorDescription(SensorEntityDescription):
+    """Describe a Nature Remo rate limit sensor."""
+
+    value_key: str
 
 
 SENSOR_TYPES: tuple[NatureRemoSensorDescription, ...] = (
@@ -49,6 +58,31 @@ SENSOR_TYPES: tuple[NatureRemoSensorDescription, ...] = (
     ),
 )
 
+RATE_LIMIT_SENSOR_TYPES: tuple[NatureRemoRateLimitSensorDescription, ...] = (
+    NatureRemoRateLimitSensorDescription(
+        key="rate_limit_remaining",
+        value_key="remaining",
+        name="Rate Limit Remaining",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:counter",
+    ),
+    NatureRemoRateLimitSensorDescription(
+        key="rate_limit_limit",
+        value_key="limit",
+        name="Rate Limit Limit",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        icon="mdi:gauge",
+    ),
+    NatureRemoRateLimitSensorDescription(
+        key="rate_limit_reset_at",
+        value_key="reset_at",
+        name="Rate Limit Reset At",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        device_class=SensorDeviceClass.TIMESTAMP,
+        icon="mdi:clock-outline",
+    ),
+)
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -57,7 +91,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up Nature Remo sensors from a config entry."""
     runtime: NatureRemoRuntime = hass.data[DOMAIN][entry.entry_id]
-    entities: list[NatureRemoSensorEntity] = []
+    entities: list[CoordinatorEntity[NatureRemoDataUpdateCoordinator]] = []
 
     for device in runtime.coordinator.data.devices:
         newest_events = device.get("newest_events") or {}
@@ -70,6 +104,15 @@ async def async_setup_entry(
                         entity_description=description,
                     )
                 )
+
+    for description in RATE_LIMIT_SENSOR_TYPES:
+        entities.append(
+            NatureRemoRateLimitSensorEntity(
+                coordinator=runtime.coordinator,
+                config_entry=entry,
+                entity_description=description,
+            )
+        )
 
     async_add_entities(entities)
 
@@ -129,3 +172,52 @@ class NatureRemoSensorEntity(
         if event is None:
             return {}
         return {"event_created_at": event.get("created_at")}
+
+
+class NatureRemoRateLimitSensorEntity(
+    CoordinatorEntity[NatureRemoDataUpdateCoordinator], SensorEntity
+):
+    """Diagnostic sensor for Nature Remo rate limit state."""
+
+    entity_description: NatureRemoRateLimitSensorDescription
+
+    def __init__(
+        self,
+        *,
+        coordinator: NatureRemoDataUpdateCoordinator,
+        config_entry: ConfigEntry,
+        entity_description: NatureRemoRateLimitSensorDescription,
+    ) -> None:
+        super().__init__(coordinator)
+        self.entity_description = entity_description
+        self._attr_has_entity_name = True
+        self._attr_translation_key = entity_description.key
+        self._attr_unique_id = f"{config_entry.entry_id}_{entity_description.key}"
+        self._attr_device_info = DeviceInfo(
+            identifiers={(DOMAIN, f"account_{config_entry.entry_id}")},
+            manufacturer="Nature",
+            model="Cloud API",
+            name=f"{config_entry.title} Cloud",
+        )
+
+    @property
+    def available(self) -> bool:
+        """Return whether the rate limit value is available."""
+        return self.native_value is not None
+
+    @property
+    def native_value(self) -> int | datetime | None:
+        """Return the current rate limit value."""
+        rate_limit = self.coordinator.api.rate_limit
+        return getattr(rate_limit, self.entity_description.value_key)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional rate limit attributes."""
+        rate_limit = self.coordinator.api.rate_limit
+        return {
+            "limit": rate_limit.limit,
+            "remaining": rate_limit.remaining,
+            "reset_at": rate_limit.reset_at,
+            "poll_interval_seconds": int(self.coordinator.update_interval.total_seconds()),
+        }
