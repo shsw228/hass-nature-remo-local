@@ -77,7 +77,7 @@ class NatureRemoLightEntity(
             raise HomeAssistantError("No matching on button found for this light")
 
         await self._api.async_set_light_button(self._appliance_id, button)
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_request_refresh_if_safe()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
         """Turn the light off."""
@@ -86,7 +86,7 @@ class NatureRemoLightEntity(
             raise HomeAssistantError("No matching off button found for this light")
 
         await self._api.async_set_light_button(self._appliance_id, button)
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_request_refresh_if_safe()
 
     @property
     def _appliance(self) -> dict[str, Any] | None:

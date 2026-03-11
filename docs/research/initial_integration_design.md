@@ -42,6 +42,8 @@ custom_components/nature_remo_local/
 - 定期 poll は Cloud API の `devices` と `appliances` をまとめて取得する
 - coordinator が API レスポンスを正規化し、各 entity は coordinator データだけを読む
 - 実行後は即座に coordinator の再取得を走らせ、UI 上の反映遅れを最小化する
+- デフォルトの更新間隔は 180 秒とし、常時 poll 時の Cloud API 呼び出しは 1 回の更新で `devices` と `appliances` の 2 リクエストに抑える
+- `X-Rate-Limit-Limit` `X-Rate-Limit-Remaining` `X-Rate-Limit-Reset` を読み、残量が少ないときは操作後の即時 refresh を抑制し、poll 間隔を reset 時刻まで一時的に延長する
 
 ## 初期 entity 方針
 ### `climate`
@@ -82,6 +84,7 @@ custom_components/nature_remo_local/
 - token や host は `ConfigEntry.data` に保存し、可変値は `options` に逃がす
 - entity は API を直接叩かず coordinator 経由に寄せる
 - Local API は hidden API の有無がはっきりするまで core 設計に混ぜない
+- Nature のレート制限は「Nature アカウント単位で 5 分以内に 30 リクエスト以上で 429」。デフォルト 180 秒なら定常時は 5 分あたり約 4 リクエストで収まる
 
 ## 参考
 - Home Assistant manifest: https://developers.home-assistant.io/docs/creating_integration_manifest/

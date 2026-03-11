@@ -161,7 +161,7 @@ class NatureRemoClimateEntity(
             temperature=str(int(temperature) if float(temperature).is_integer() else temperature),
         )
         await self._api.async_set_aircon_settings(self._appliance_id, payload)
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_request_refresh_if_safe()
 
     async def async_set_hvac_mode(self, hvac_mode: HVACMode) -> None:
         """Set the HVAC mode."""
@@ -174,7 +174,7 @@ class NatureRemoClimateEntity(
             )
 
         await self._api.async_set_aircon_settings(self._appliance_id, payload)
-        await self.coordinator.async_request_refresh()
+        await self.coordinator.async_request_refresh_if_safe()
 
     async def async_turn_on(self) -> None:
         """Turn the entity on."""

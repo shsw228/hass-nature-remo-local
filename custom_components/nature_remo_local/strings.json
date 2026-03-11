@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "Connect to Nature Remo",
-        "description": "Enter a Nature Remo Cloud API access token.",
+        "description": "Enter a Nature Remo Cloud API access token. The default update interval is 180 seconds. Nature rate limits requests per account, so shorter intervals are not recommended.",
         "data": {
           "access_token": "Access token",
           "scan_interval": "Update interval (seconds)"
@@ -23,6 +23,7 @@
     "step": {
       "init": {
         "title": "Nature Remo options",
+        "description": "The default update interval is 180 seconds. Each refresh uses multiple Cloud API requests, so shorter intervals can hit the account rate limit.",
         "data": {
           "scan_interval": "Update interval (seconds)"
         }
