@@ -91,3 +91,7 @@ Saved API specs:
 ## Support
 
 If setup or entity behavior fails, please open an issue with the Home Assistant log output and the affected entity type (`sensor`, `climate`, `light`, or `button`).
+
+## License
+
+MIT
