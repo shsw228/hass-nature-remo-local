@@ -4,6 +4,8 @@ Custom Home Assistant integration for [Nature Remo](https://nature.global/), foc
 
 This repository is rebuilding the integration from scratch for newer Home Assistant versions. The current implementation uses the Nature Remo Cloud API for discovery, state updates, and control. Local API support is planned separately once the practical control path is clearer.
 
+Current release: `1.0.0`
+
 ## Current Features
 
 - Config Flow based setup from Home Assistant UI
@@ -59,6 +61,13 @@ The token needs at least:
 - Light on/off currently depends on matching known button names from the Nature Remo API response.
 - Light appliances also expose each available Nature Remo button as a Home Assistant `button` entity.
 
+## Known Limitations
+
+- Local API based control is not implemented in this release.
+- `climate` `hvac_action` is inferred from mode and temperature difference, so it may show `idle` when the air conditioner is powered on but not actively cooling or heating.
+- `light` brightness is exposed as Nature Remo button actions rather than a native Home Assistant brightness slider.
+- Available light button names depend on the appliance data returned by the Nature Remo Cloud API.
+
 ## Dashboard
 
 For a better climate UI, the standard Home Assistant `thermostat` card is usually a better fit than `tile`.
@@ -79,6 +88,6 @@ Saved API specs:
 - [`docs/apis/cloud.swagger.json`](docs/apis/cloud.swagger.json)
 - [`docs/apis/local.swagger.yml`](docs/apis/local.swagger.yml)
 
-## Status
+## Support
 
-This is still an early version. If setup or entity behavior fails, please open an issue with the Home Assistant log output and the affected entity type (`sensor`, `climate`, or `light`).
+If setup or entity behavior fails, please open an issue with the Home Assistant log output and the affected entity type (`sensor`, `climate`, `light`, or `button`).
