@@ -1,5 +1,7 @@
 # Nature Remo Local for Home Assistant
 
+[![Latest Release](https://img.shields.io/github/v/release/shsw228/hass-nature-remo-local?sort=semver)](https://github.com/shsw228/hass-nature-remo-local/releases/latest)
+
 Custom Home Assistant integration for [Nature Remo](https://nature.global/), focused on a clean config flow, HACS installation, and a Cloud API based first release.
 
 This repository is rebuilding the integration from scratch for newer Home Assistant versions. The current implementation uses the Nature Remo Cloud API for discovery, state updates, and control. Local API support is planned separately once the practical control path is clearer.
