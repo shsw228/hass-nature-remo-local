@@ -6,8 +6,6 @@ Custom Home Assistant integration for [Nature Remo](https://nature.global/), foc
 
 This repository is rebuilding the integration from scratch for newer Home Assistant versions. The current implementation uses the Nature Remo Cloud API for discovery, state updates, and control. Local API support is planned separately once the practical control path is clearer.
 
-Current release: `1.0.0`
-
 ## Current Features
 
 - Config Flow based setup from Home Assistant UI
